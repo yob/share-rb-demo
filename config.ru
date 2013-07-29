@@ -26,7 +26,7 @@ function init() {
 </script>
 </head><body onload='init();'>
 <h1>share.rb demo</h1>
-<textarea id='pad'></textarea>
+<textarea id='pad' rows=5 cols=50></textarea>
 </body></html>
 EOF
     ]
