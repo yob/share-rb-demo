@@ -18,7 +18,11 @@ class ExampleApp < Sinatra::Base
 <script>
 function init() {
   var socketUri = 'ws://' + document.location.host + '/socket';
-  sharejs.open('test-document', 'text', socketUri, function(error, doc) {
+  var options = {
+    origin: socketUri,
+    authentication: 123456
+  }
+  sharejs.open('test-document', 'text', options, function(error, doc) {
     var elem = document.getElementById('pad');
     doc.attach_textarea(elem);
   });
