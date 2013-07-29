@@ -1,13 +1,3 @@
-#
-# An example rack config file. Boot the server like so:
-#
-#    bundle
-#    bundle exec thin -R config.ru start
-#
-# .. and then point your browser at the address thin prints out. Probably
-# something like http://127.0.0.1:3000
-#
-
 require 'share'
 require 'sinatra'
 
