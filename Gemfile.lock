@@ -1,5 +1,6 @@
-PATH
-  remote: /home/jh/git/share.rb
+GIT
+  remote: git://github.com/yob/share.rb.git
+  revision: 8f4df8bb1bd7f5066dcc2c2b847c43f16e0b740f
   specs:
     share (0.0.5)
       sinatra
