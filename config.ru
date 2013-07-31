@@ -1,5 +1,6 @@
 require 'share'
 require 'sinatra'
+require 'browser_channel'
 
 # a tiny sinatra app used for the demo
 #
@@ -27,16 +28,14 @@ EOF
   get "/text" do
     [200, { 'Content-Type' => 'text/html' }, <<EOF
 <html><head>
+<script src="/js/bcsocket-uncompressed.js" type="text/javascript"></script>
 <script src="/js/share.uncompressed.js" type="text/javascript"></script>
 <script src="/js/textarea.js" type="text/javascript"></script>
 <script>
 function init() {
-  var socketUri = 'ws://' + document.location.host + '/socket';
-  var options = {
-    origin: socketUri,
-    authentication: 123456
-  }
-  sharejs.open('test-document', 'text', options, function(error, doc) {
+  var wsUri = 'ws://' + document.location.host + '/socket';
+  var bcUri = 'http://127.0.0.1:3000/channel';
+  sharejs.open('test-document', 'text', bcUri, function(error, doc) {
     var elem = document.getElementById('pad');
     doc.attach_textarea(elem);
   });
@@ -53,6 +52,7 @@ EOF
   get "/object" do
     [200, { 'Content-Type' => 'text/html' }, <<EOF
 <html><head>
+<script src="/js/bcsocket.js" type="text/javascript"></script>
 <script src="/js/share.uncompressed.js" type="text/javascript"></script>
 <script src="/js/json.uncompressed.js" type="text/javascript"></script>
 <script src="/js/textarea.js" type="text/javascript"></script>
@@ -90,8 +90,26 @@ EOF
   end
 end
 
+class ShareBCHandler < BrowserChannel::Handler
+  def call(post_data)
+    puts "ShareBCHandler#call, post_data, #{post_data.inspect}"
+    requests = decode_post_data(post_data)
+    puts "  requests: #{requests.inspect}"
+    #requests.each { |r| @session << [r] }
+  end
+  # called when channel session is final
+  def terminate
+  end
+end
+
 repository = Share::Repo.new
 
+# option 1 for client connections - browserchannel
+map '/channel' do
+  run BrowserChannel::Server.new(:handler => ShareBCHandler)
+end
+
+# option 2 for client connections - websockets
 map '/socket' do
   run Share::WebSocketApp.new(repository)
 end
