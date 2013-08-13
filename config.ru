@@ -34,7 +34,7 @@ EOF
 <script>
 function init() {
   var wsUri = 'ws://' + document.location.host + '/socket';
-  var bcUri = 'http://127.0.0.1:3000/channel';
+  var bcUri = 'http://127.0.0.1:9292/channel';
   sharejs.open('test-document', 'text', bcUri, function(error, doc) {
     var elem = document.getElementById('pad');
     doc.attach_textarea(elem);
@@ -90,23 +90,11 @@ EOF
   end
 end
 
-class ShareBCHandler < BrowserChannel::Handler
-  def call(post_data)
-    puts "ShareBCHandler#call, post_data, #{post_data.inspect}"
-    requests = decode_post_data(post_data)
-    puts "  requests: #{requests.inspect}"
-    #requests.each { |r| @session << [r] }
-  end
-  # called when channel session is final
-  def terminate
-  end
-end
-
 repository = Share::Repo.new
 
-# option 1 for client connections - browserchannel
+# option 1 for client connections - BrowserChannel
 map '/channel' do
-  run BrowserChannel::Server.new(:handler => ShareBCHandler)
+  run Share::BcApp.new(repository)
 end
 
 # option 2 for client connections - websockets

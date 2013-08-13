@@ -3,5 +3,5 @@ source "https://rubygems.org"
 
 gem "share", github: "yob/share.rb"
 gem "sinatra"
-gem "thin"
-gem "browserchannel"
+gem "puma"
+gem "browser_channel", github: "yob/browserchannel", branch: "james"

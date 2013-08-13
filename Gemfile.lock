@@ -1,6 +1,15 @@
 GIT
+  remote: git://github.com/yob/browserchannel.git
+  revision: 96f5f35a2f69555f09f83fb37468791b7c3efc7e
+  branch: james
+  specs:
+    browser_channel (0.0.1)
+      sinatra
+      thread_safe (~> 0.0.3)
+
+GIT
   remote: git://github.com/yob/share.rb.git
-  revision: 8f4df8bb1bd7f5066dcc2c2b847c43f16e0b740f
+  revision: 68d9f5e82f8b9f21f20a9c54491858b554d1a71a
   specs:
     share (0.0.5)
       sinatra
@@ -12,13 +21,13 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.5)
-    browserchannel (0.0.1)
-      thin
     daemons (1.1.9)
     em-websocket (0.3.8)
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
     eventmachine (1.0.3)
+    puma (2.4.0)
+      rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -42,7 +51,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  browserchannel
+  browser_channel!
+  puma
   share!
   sinatra
-  thin
